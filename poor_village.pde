@@ -2,18 +2,27 @@ PImage poorMan_front;
 PImage poorMan_frontHøjre;
 PImage poorMan_frontVenstre;
 
+PImage[] frontWalk = new PImage[4];
+
 PImage poorMan_bag;
 PImage poorMan_bagHøjre;
 PImage poorMan_bagVenstre;
+
+PImage[] bagWalk = new PImage[4];
 
 PImage poorMan_højre;
 PImage poorMan_højreHøjre;
 PImage poorMan_højreVenstre;
 
+PImage[] højreWalk = new PImage[4];
+
 PImage poorMan_venstre;
 PImage poorMan_venstreHøjre;
 PImage poorMan_venstreVenstre;
 
+PImage[] venstreWalk = new PImage[4];
+
+   
 boolean up;
 boolean down;
 boolean right;
@@ -30,54 +39,83 @@ PVector dotPos;
 PVector poorManPos;
 PVector poorManSpeed;
 
-int mult;
 
 int resize_x;
 int resize_y;
 
-PVector midt;
+PVector correction;
+
+float mult;
+
+Ui u;
+Mult m;
 
 void setup() {
   size(1742, 980);
+  
+  u = new Ui();
+  m = new Mult();
+  
+  
+  smooth();
 
   resize_x = 63;
   resize_y = 106;
+  
+  
+  //gå nedad
+  frontWalk[0] = loadImage("front.png");
+  frontWalk[0].resize(resize_x, resize_y);
 
-  poorMan_front = loadImage("front.png");
-  poorMan_front.resize(resize_x+5, resize_y);
+  frontWalk[1] = loadImage("frontHøjre.png");
+  frontWalk[1].resize(resize_x, resize_y);
+  
+  frontWalk[2] = loadImage("front.png");
+  frontWalk[2].resize(resize_x, resize_y);
 
-  poorMan_frontHøjre = loadImage("frontHøjre.png");
-  poorMan_frontHøjre.resize(resize_x, resize_y);
+  frontWalk[3] = loadImage("frontVenstre.png");
+  frontWalk[3].resize(resize_x, resize_y);
 
-  poorMan_frontVenstre = loadImage("frontVenstre.png");
-  poorMan_frontVenstre.resize(resize_x, resize_y);
+  //gå opad
+  bagWalk[0] = loadImage("bag.png");
+  bagWalk[0].resize(resize_x, resize_y);
 
-  poorMan_bag = loadImage("bag.png");
-  poorMan_bag.resize(resize_x+10, resize_y);
+  bagWalk[1] = loadImage("bagHøjre.png");
+  bagWalk[1].resize(resize_x, resize_y);
+  
+  bagWalk[2] = loadImage("bag.png");
+  bagWalk[2].resize(resize_x, resize_y);
 
-  poorMan_bagHøjre = loadImage("bagHøjre.png");
-  poorMan_bagHøjre.resize(resize_x, resize_y);
+  bagWalk[3] = loadImage("bagVenstre.png");
+  bagWalk[3].resize(resize_x, resize_y);
+  
+  
+  //gå til højre
+  højreWalk[0] = loadImage("højre.png");
+  højreWalk[0].resize(resize_x, resize_y);
 
-  poorMan_bagVenstre = loadImage("bagVenstre.png");
-  poorMan_bagVenstre.resize(resize_x, resize_y);
+  højreWalk[1] = loadImage("højreHøjre.png");
+  højreWalk[1].resize(resize_x, resize_y);
+  
+  højreWalk[2] = loadImage("højre.png");
+  højreWalk[2].resize(resize_x, resize_y);
 
-  poorMan_højre = loadImage("højre.png");
-  poorMan_højre.resize(resize_x, resize_y);
+  højreWalk[3] = loadImage("højreVenstre.png");
+  højreWalk[3].resize(resize_x, resize_y);
 
-  poorMan_højreHøjre = loadImage("højreHøjre.png");
-  poorMan_højreHøjre.resize(resize_x, resize_y);
 
-  poorMan_højreVenstre = loadImage("højreVenstre.png");
-  poorMan_højreVenstre.resize(resize_x, resize_y);
+  //gå til venstre
+  venstreWalk[0] = loadImage("venstre.png");
+  venstreWalk[0].resize(resize_x, resize_y);
 
-  poorMan_venstre = loadImage("venstre.png");
-  poorMan_venstre.resize(resize_x, resize_y);
+  venstreWalk[1] = loadImage("venstreHøjre.png");
+  venstreWalk[1].resize(resize_x, resize_y);
+  
+  venstreWalk[2] = loadImage("venstre.png");
+  venstreWalk[2].resize(resize_x, resize_y);
 
-  poorMan_venstreHøjre = loadImage("venstreHøjre.png");
-  poorMan_venstreHøjre.resize(resize_x, resize_y);
-
-  poorMan_venstreVenstre = loadImage("venstreVenstre.png");
-  poorMan_venstreVenstre.resize(resize_x, resize_y);
+  venstreWalk[3] = loadImage("venstreVenstre.png");
+  venstreWalk[3].resize(resize_x, resize_y);
 
   up = false;
   down = false;
@@ -86,18 +124,17 @@ void setup() {
 
   toggleMap = false;
 
-  mult = 4;
+  map = loadImage("village.png");
+  map.resize(3322, 1759);
 
-  map = loadImage("map.png");
-  map.resize(2200, 1759);
-
-  kort = loadImage("map.png");
-  kort.resize(250, 200);
+  kort = loadImage("village.png");
+  kort.resize(378, 200);
+  kort = kort.get(115, 40, kort.width-170, kort.height-65);
 
   dot = loadImage("dot.png");
   dot.resize(15, 15);
   
-  megaKort = loadImage("map.png");
+  megaKort = loadImage("village.png");
   megaKort.resize(width, height);
 
 
@@ -105,17 +142,23 @@ void setup() {
   poorManPos = new PVector(0, 0);
   poorManSpeed = new PVector(0, 0);
 
-  dotPos = new PVector(poorManPos.x+105, poorManPos.y+65);
+  dotPos = new PVector(poorManPos.x, poorManPos.y);
 
 
-  midt = new PVector(875, 485);
+  correction = new PVector(915, 525);
+  
+  
 }
 
 void draw() {
+  
+  
+  background(1,110,129);
 
+  
   if (toggleMap == false) {
 
-    if (poorManPos.x >= 0) {
+   /* if (poorManPos.x >= 0) {
       poorManPos.x = 0;
       dotPos.x = 105;
     }
@@ -125,36 +168,42 @@ void draw() {
       dotPos.y = 65;
     }
 
-
+*/
     image(map, poorManPos.x, poorManPos.y);
-
+  
     image(kort, 10, 10);
 
     image(dot, dotPos.x, dotPos.y);
-
+    
+    
+    u.start();
+    
+    m.mult();
+    m.checkPath();
+    
 
     if (up == true) {
       //Up
-      image(poorMan_bag, width/2, height/2 );
+      image(bagWalk[frameCount/12%4], width/2, height/2 );
 
       print("up ");
     } else if (down == true) {
       //Down
-      image(poorMan_frontHøjre, width/2, height/2 );
+      image(frontWalk[frameCount/12%4], width/2, height/2 );
 
       print("down ");
     } else if (right == true) {
       //Right
-      image(poorMan_højre, width/2, height/2 );
+      image(højreWalk[frameCount/12%4], width/2, height/2 );
 
       print("right ");
     } else if (left == true) {
       //Left
-      image(poorMan_venstre, width/2, height/2 );
+      image(venstreWalk[frameCount/12%4], width/2, height/2 );
 
       print("left ");
     } else {
-      image(poorMan_front, width/2, height/2 );
+      image(frontWalk[0], width/2, height/2 );
       print("stop ");
     }
 
@@ -164,12 +213,14 @@ void draw() {
 
     poorManPos.add(new PVector(poorManSpeed.x, poorManSpeed.y).mult(mult));
 
-    dotPos.add(new PVector(poorManSpeed.x, poorManSpeed.y).mult(mult*(-0.112)));
+    dotPos.add(new PVector(poorManSpeed.x, poorManSpeed.y).mult(mult*(-0.113)));
+    
+    
 
-    print(poorManSpeed);
-    print(" ");
-
-    println(toggleMap);
+    println(mult);
+    
+   
+    
   }
   else{
       image(megaKort, 0, 0);
@@ -193,9 +244,6 @@ void keyPressed() {
     poorManSpeed.x = -1;
     left = true;
   }
-  if (key == 'm' || key == 'M') {
-    toggleMap =(!toggleMap);
-  }
 }
 
 void keyReleased() {
@@ -214,5 +262,8 @@ void keyReleased() {
   if (key == 'd' || key == 'D') {
     poorManSpeed.x = 0;
     left = false;
+  }
+  if (key == 'm' || key == 'M') {
+    toggleMap =(!toggleMap);
   }
 }
