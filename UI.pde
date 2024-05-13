@@ -1,36 +1,50 @@
 public class Ui {
 
+
+  PFont font;
+
+  PVector[] startRectangles = new PVector[10];
+  PVector[] rectangles = new PVector[10];
+
   float health;
   float food;
   float water;
+  float coins;
 
   PImage livTom;
   PImage liv;
 
-  PImage sultTom;
-  PImage sult;
-
   PImage tørstTom;
   PImage tørst;
   
-  
+  PImage coin;
+
+
   public void load() {
     liv = loadImage("liv.png");
     liv.resize(85, 85);
 
-    sult = loadImage("sult.png");
-    sult.resize(85, 85);
-
     tørst = loadImage("tørst.png");
-    tørst.resize(85, 85);
+    tørst.resize(80, 80);
     
+    coin = loadImage("coin.png");
+    coin.resize(60, 50);
+    
+    font = createFont("Arial", 72);
   }
 
   public void run() {
-
-    health += 0.2;
-    food += 0.2;
-    water += 0.05;
+    if (health < 85) {
+      if (water >= 85) {
+        health += 0.3;
+      }
+    }
+    if (food < 85) {
+      food += 0.2;
+    }
+    if (water < 85) {
+      water += 0.05;
+    }
 
 
 
@@ -38,15 +52,8 @@ public class Ui {
     livTom = liv.get(0, 0, liv.width, (int)health);
     livTom.filter(GRAY);
 
-    image(liv, width-300, 25);
-    image(livTom, width-300, 25);
-
-    //hunger
-    sultTom = sult.get(0, 0, sult.width, (int)food);
-    sultTom.filter(GRAY);
-
-    image(sult, width-200, 25);
-    image(sultTom, width-200, 25);
+    image(liv, width-200, 25);
+    image(livTom, width-200, 25);
 
     //tørst
     tørstTom = tørst.get(0, 0, tørst.width, (int)water);
@@ -54,12 +61,14 @@ public class Ui {
 
     image(tørst, width-100, 25);
     image(tørstTom, width-100, 25);
-  }
-
-  void water() {
-    if(water > 0){
-      water -= 0.4;
-    }
     
+    image(coin, width-80, 125);
+    
+    fill(0);
+    textFont(font);
+    textAlign(RIGHT);
+    text((int)coins,width-90,173);
+
+    fill(0, 25);
   }
 }

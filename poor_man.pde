@@ -1,10 +1,11 @@
 public class PoorMan {
 
+  boolean toggleMap;
   
   PVector poorManPos;
   PVector poorManSpeed;
   PVector dotPos;
-  
+  PVector correction;
   
   
   boolean up;
@@ -22,13 +23,14 @@ public class PoorMan {
     poorManSpeed = new PVector(0, 0);
     poorManPos = new PVector(-307, 0);
     dotPos = new PVector(22, 15);
-    
+    correction = new PVector(915, 525);
     
   }
 
+public void run() {
+}
 
-
-  void pressedKey() {
+void pressedKey() {
     if (key == 'w' || key == 'W') {
       poorManSpeed.y = 1;
       up = true;
@@ -47,7 +49,7 @@ public class PoorMan {
     }
   }
 
-  void releasedKey() {
+void releasedKey() {
     if (key == 'w' || key == 'W' ) {
       poorManSpeed.y = 0;
       up = false;
@@ -64,5 +66,8 @@ public class PoorMan {
       poorManSpeed.x = 0;
       left = false;
     }
+    if (key == 'm' || key == 'M') {
+    toggleMap =(!toggleMap);
+  }
   }
 }

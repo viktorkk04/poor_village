@@ -2,7 +2,6 @@ public class Maps {
 
   PoorMan p;
 
-  boolean toggleMap;
 
   PImage map;
   PImage kort;
@@ -60,7 +59,7 @@ public class Maps {
 
     
     
-    if(toggleMap == true){
+    if(p.toggleMap == true){
     stor();
     }
   }
@@ -69,9 +68,4 @@ public class Maps {
     image(megaKort, 0, 0);
   }
 
-  void releasedKey() {
-    
-      toggleMap =(!toggleMap);
-    
-  }
 }

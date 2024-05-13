@@ -10,12 +10,10 @@ public class Mult {
   }
   public void check() {
   
-  
     if (p.poorManSpeed.y != 0 && p.poorManSpeed.x != 0 && mult == 3 ) {
       mult += -1;
       
     }
-    
     p.poorManPos.add(new PVector(p.poorManSpeed.x, p.poorManSpeed.y).mult(mult));
     p.dotPos.add(new PVector(p.poorManSpeed.x, p.poorManSpeed.y).mult(mult*(-0.113)));
     
