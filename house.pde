@@ -57,7 +57,7 @@ public class House {
       if (needWaterTime[i] >= 100) {
         ui.coins += 5;
         needWaterTime[i] = 0;
-        ui.water += 15;
+        ui.water += 12;
       }
     }
   }

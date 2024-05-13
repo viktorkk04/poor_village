@@ -50,7 +50,7 @@ public class Manager {
     a.load();
   }
   public void startGame() {
-    if (ui.health <= 85) {
+    if (ui.health <= 80) {
 
       if (p.toggleMap == false) {
 
