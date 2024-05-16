@@ -62,14 +62,13 @@ public class Manager {
         h.DrawHouse();
         w.DrawWater();
 
-        ui.run();
-
-        
         shop.run();
         
         if(shop.run == true){
         well.run();
         }
+        
+        ui.run();
         
         a.walk();
 

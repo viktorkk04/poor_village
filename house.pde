@@ -53,7 +53,7 @@ public class House {
     }
   }
   public void needWater(int i) {
-    if (ui.water <= 70) {
+    if (ui.water <= 60) {
       if (needWaterTime[i] >= 100) {
         ui.coins += 5;
         needWaterTime[i] = 0;
